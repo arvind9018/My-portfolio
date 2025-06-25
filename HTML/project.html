@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    
+    <style>
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .go-back {
+            background-color: #FFD700;
+            color: black;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+            
+        }
+
+        .go-back:hover {
+            background-color: #ffcc00;
+            box-shadow: 0 0 15px rgba(214, 224, 25, 0.7);
+            transform: translateY(-5px);
+        }
+
+       
+
+        /* Desktop Filter List */
+        .filter-list {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            
+        }
+
+        .filter-item button {
+            color: white;
+            font-size: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            transition: 0.3s;
+            
+        }
+
+        .filter-item button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            
+        }
+
+        .filter-item button.active {
+            color: #FFD700;
+            
+        }
+
+        /* Mobile View: Show "Select Category" button */
+        .category-button {
+            background-color: #FFD700;
+            color: black;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: none; /* Hidden on desktop */
+            position: relative;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .category-button:hover {
+            background-color: #ffcc00;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Dropdown menu */
+        .dropdown {
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            padding: 10px;
+            min-width: 200px;
+            z-index: 10;
+            
+        }
+
+        .dropdown.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 600px) {
+            .filter-list {
+                display: none; /* Hide filter buttons on mobile */
+            }
+
+            .category-button {
+                display: inline-block; /* Show dropdown button */
+            }
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+          .project-card img::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            z-index: 1;
+            transition: var(--transition-1);
+          }
+          
+          .project-card {
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 10px;
+            position: relative;
+            text-align: center;
+            transition: 0.3s;
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .project-item-icon-box {
+            --scale: 0.8;
+          
+            background: var(--jet);
+            color: var(--orange-yellow-crayola);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(var(--scale));
+            font-size: 20px;
+            padding: 18px;
+            border-radius: 12px;
+            opacity: 0;
+            z-index: 1;
+            transition: var(--transition-1);
+          }
+          
+
+   
+    </style>
+</head>
+<body>
+
+    <!-- Mobile: Select Category Button -->
+    <button class="category-button" onclick="toggleFilters()">
+        <span id="selectedCategory">Select Category</span> ▼
+    </button>
+
+    <!-- Desktop: Filter List -->
+    <div class="filter-list">
+        <div class="filter-item"><button class="active" onclick="filterProjects('all', 'All')">All</button></div>
+        <div class="filter-item"><button onclick="filterProjects('web-design', 'Web Design')">Web Design</button></div>
+        <div class="filter-item"><button onclick="filterProjects('applications', 'Applications')">Applications</button></div>
+        <div class="filter-item"><button onclick="filterProjects('web-dev', 'Web Development')">Web Development</button></div>
+        <div class="filter-item"><button onclick="filterProjects('data-science', 'Data Science')">Data Science</button></div>
+    </div>
+
+    <!-- Mobile: Dropdown -->
+    <div class="dropdown" id="dropdownMenu">
+        <div class="filter-item"><button onclick="filterProjects('all', 'All')">All</button></div>
+        <div class="filter-item"><button onclick="filterProjects('web-design', 'Web Design')">Web Design</button></div>
+        <div class="filter-item"><button onclick="filterProjects('applications', 'Applications')">Applications</button></div>
+        <div class="filter-item"><button onclick="filterProjects('web-dev', 'Web Development')">Web Development</button></div>
+        <div class="filter-item"><button onclick="filterProjects('data-science', 'Data Science')">Data Science</button></div>
+    </div>
+
+    <div class="project-grid">
+        
+        
+        <!-- <div class="project-card web-dev">
+            <img src="finance.png" alt="Finance">
+            <h3>Finance</h3>
+            <p>Web Development</p>
+        </div> -->
+
+        <!-- <div class="project-card applications">
+            <img src="brawlhalla.png" alt="Brawlhalla">
+            <h3>Brawlhalla</h3>
+            <p>Applications</p>
+        </div> -->
+
+        <div class="project-card web-design">
+            <a href="https://shorturl.at/CDmpv" target="_blank">
+            <img src="1731990696943.jpeg" alt="Amazon Sales DashBoard">
+            </a>
+            <h3>Amazon Sales DashBoard</h3>
+            <p>Web Design</p>
+        </div>
+
+        <!-- <div class="project-card web-dev">
+            <img src="summary.png" alt="Summary">
+            <h3>Summary</h3>
+            <p>Web Development</p>
+        </div> -->
+
+        <!-- <div class="project-card applications">
+            <img src="task-manager.png" alt="Task Manager">
+            <h3>Task Manager</h3>
+            <p>Applications</p>
+        </div> -->
+
+        <div class="project-card data-science">
+            <div class="project-item-icon-box">
+                <ion-icon name="eye-outline"></ion-icon>
+              </div>
+            <a href="https://github.com/arvind9018/Movie-Predication-Rating" target="_blank">
+            <img src="Movieprediction.jpg" alt="ML Project">
+            
+            </a>
+            <h3>Movie Rating Prediction</h3>
+            <p>Data Science</p>
+        </div>
+    </div>
+    
+    <button class="go-back" onclick="goBack()">← Go Back</button>
+
+    <script>
+        function filterProjects(category, categoryName) {
+            const projects = document.querySelectorAll('.project-card');
+            const buttons = document.querySelectorAll('.filter-item button');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            projects.forEach(project => {
+                if (category === 'all' || project.classList.contains(category)) {
+                    project.style.display = 'block';
+                } else {
+                    project.style.display = 'none';
+                }
+            });
+
+            // Update dropdown button text
+            document.getElementById("selectedCategory").innerText = categoryName;
+
+            // Close the dropdown after selection
+            document.getElementById("dropdownMenu").classList.remove("show");
+        }
+
+        function toggleFilters() {
+            document.getElementById("dropdownMenu").classList.toggle("show");
+        }
+
+        document.addEventListener("click", function(event) {
+            const dropdown = document.getElementById("dropdownMenu");
+            const button = document.querySelector(".category-button");
+
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove("show");
+            }
+        });
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+</body>
+</html>
